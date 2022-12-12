@@ -34,18 +34,18 @@ CREATE TABLE Internships(
 	CurrentPhase VARCHAR(14) NOT NULL CHECK(CurrentPhase in ('in preparation', 'in process', 'finished')),
 	LeaderInternshipId INT REFERENCES Members(MemberId) UNIQUE
 )
-DROP TABLE INTERNSHIPS CASCADE
+DROP TABLE Homeworks CASCADE
 CREATE TABLE Homeworks(
 	HomeworkId SERIAL PRIMARY KEY,
 	Name VARCHAR(30) NOT NULL,
-	ReviewerId INT REFERENCES Members(MemberId),
-	Grade INT NOT NULL CHECK(Grade in (1, 2, 3, 4, 5))
+	ReviewerId INT REFERENCES Members(MemberId)
 )
 CREATE TABLE HomeworksInterns(
 	HomeworkId INT REFERENCES Homeworks(HomeworkId),
 	InternId INT REFERENCES Interns(InternId),
-	PRIMARY KEY(HomeworkId, InternId)
+	Grade INT NOT NULL CHECK(Grade in (1, 2, 3, 4, 5))
 )
+DROP TABLE HomeworksInterns
 CREATE TABLE DomainsInterns(
 	DomainId INT REFERENCES Domains(DomainId),
 	InternId INT REFERENCES Interns(InternId),
@@ -157,6 +157,35 @@ INSERT INTO DomainsInterns(DomainId, InternId, Status) VALUES
 (4, 9, 'kicked out'),
 (1, 10, 'intern')
 
+SELECT * FROM HOMEWORKS
+INSERT INTO Homeworks(HomeworkId, Name, ReviewerId) VALUES
+(default, 'Database homework', 3),
+(default, 'Database homework', 2),
+(default, 'Design homework1', 1),
+(default, 'Design homework2', 5),
+(default, 'Marketing homework1', 10),
+(default, 'Marketing homework2', 10),
+(default, 'Git homework', 3),
+(default, 'OOP homework', 2),
+(default, 'OOP homework', 4)
+
+SELECT * FROM HomeworksInterns
+INSERT INTO HomeworksInterns(HomeworkId, InternId, Grade) VALUES
+(1, 1, 3),
+(1, 2, 5),
+(2, 6, 2),
+(2, 10, 3),
+(3, 3, 4),
+(4, 3, 5),
+(5, 4, 5),
+(5, 5, 4),
+(5, 7, 3),
+(5, 9, 3),
+(6, 7, 5),
+(6, 9, 4),
+(7, 1, 3),
+(8, 2, 3),
+(9, 1, 4)
 
 ---ideas
 SELECT COUNT(*) AS NumberInDomains, d.Name AS DomainName FROM Members m
